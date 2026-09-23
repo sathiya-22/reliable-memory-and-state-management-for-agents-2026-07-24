@@ -1,12 +1,15 @@
 const express = require('express');
 const Redis = require('ioredis');
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// Connect to Redis. Assumes Redis is running on localhost:6379
-// In a production environment, this would be configured via environment variables.
-const redis = new Redis();
+// Connect to Redis. Configure via environment variables or default to localhost:6379
+const redis = new Redis({
+  host: process.env.REDIS_HOST || 'localhost',
+  port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : 6379,
+});
 
 app.use(express.json());
 
